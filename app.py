@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session
 from flaskext.mysql import MySQL
 
 import os
@@ -26,7 +26,16 @@ def login():
 	if data is None:
 		return render_template('wrong-login.html')
 	else:
-		return "Logged in successfully"
+		session['username'] = username
+		session['type'] = data[2] 
+		return redirect('/dashboard')
+
+
+@app.route('/dashboard')
+def homepage():
+	if 'username' not in session:
+		return redirect('/')
+	return render_template("dashboard.html")
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0',port=8000,debug=True)

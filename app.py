@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, abort
 from flaskext.mysql import MySQL
 
 import os
@@ -44,7 +44,13 @@ def logout():
 def homepage():
 	if 'username' not in session:
 		return redirect('/')
-	return render_template("dashboard.html")
+	cursor = mysql.connect().cursor()
+	cursor.execute("SELECT name, dob, sex, email, number, address FROM user, profile where user.username = \"" + session['username'] + "\" and user.username = profile.username")
+	data = cursor.fetchone()
+	if data is None:
+		return abort(404)
+	print(data)
+	return render_template("dashboard.html",data=data)
 
 @app.route('/help')
 def help():

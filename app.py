@@ -14,10 +14,14 @@ mysql.init_app(app)
 
 @app.route('/')
 def index():
+	if 'username' in session:
+		return redirect('/dashboard')
 	return render_template('index.html')
 
 @app.route('/login', methods=['GET','POST'])
 def login():
+	if 'username' in session:
+		return redirect('/dashboard')	
 	username = request.form.get('username')
 	password = request.form.get('password')
 	cursor = mysql.connect().cursor()
@@ -30,12 +34,21 @@ def login():
 		session['type'] = data[2] 
 		return redirect('/dashboard')
 
+@app.route('/logout')
+def logout():
+	session.pop('username')
+	session.pop('type') 
+	return redirect('/')
 
 @app.route('/dashboard')
 def homepage():
 	if 'username' not in session:
 		return redirect('/')
 	return render_template("dashboard.html")
+
+@app.route('/help')
+def help():
+	return render_template("help.html")
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0',port=8000,debug=True)

@@ -24,7 +24,7 @@ def login():
 	cursor.execute("SELECT * FROM user where username='" + username + "' and password='" + password + "'")
 	data = cursor.fetchone()
 	if data is None:
-		return "Username or Password is wrong"
+		return render_template('wrong-login.html')
 	else:
 		return "Logged in successfully"
 

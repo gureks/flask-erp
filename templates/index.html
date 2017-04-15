@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="@gureks">
+	<title>Flask-ERP | Gurek - Azhar</title>
+	<link rel="stylesheet" href="{{ url_for('static',filename='css/bootstrap.min.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+
+	<div class="container">
+		<form class="form-signin" action="/login" method="POST">
+			<h1>ERP System</h1>
+			<hr style="border-color: black;">
+			<h3 class="form-signin-heading" id="center">Please sign in</h3>
+			<label for="inputUsername" class="sr-only">Username</label>
+			<input type="text" name="username" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
+			<label for="inputPassword" class="sr-only">Password</label>
+			<input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
+			<!-- <div class="checkbox">
+				<label>
+					<input type="checkbox" value="remember-me"> Remember me
+				</label>
+			</div> -->
+			<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+	  	</form>
+	  <p>
+		Created for <a href="https://www.usebackpack.com/iiitd/w2017/cse202/" target="_blank">CSE202-Fundamentals of Database Systems</a> Course by <a href="https://github.com/gureks">Gurek Singh</a> and <a href="">Azhar Tak</a>
+	  </p>
+
+	</div> <!-- /container -->
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
+</body>
+</html>

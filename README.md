@@ -1,5 +1,5 @@
 # Flask-ERP
-### ERP System made on Flask, web-framework for Python. Edit
+### ERP System made on Flask, web-framework for Python.
 #### Project created for CSE202-Fundamentals of Database Systems
 
 The aim is to make a Enterprise Resource Planning System using Python based web-framework
@@ -29,11 +29,11 @@ For example, IIIT-Delhi’s own [erp.iiitd.edu.in](https://erp.iiitd.edu.in)
 	* Pay fee
 	* Download fee details in CSV format
 
-5. Announcements
+5. Announcements:
 	* System-wide announcements by Administrator
 	* List announcements in the selected time period
 
-6. Requests
+6. Requests:
 	* User requests for supplies
 	* Supplies visible to the Administrator
 	* Download requests in CSV format

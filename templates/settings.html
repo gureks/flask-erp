@@ -1,0 +1,110 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="author" content="@gureks">
+	<title>Settings | Flask-ERP | Gurek - Azhar</title>
+	<link rel="stylesheet" href="{{ url_for('static',filename='css/bootstrap.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/dashboard.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
+
+</head>
+	<body>
+
+		<nav class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="/">Flask-ERP</a>
+				</div>
+				<div id="navbar" class="navbar-collapse collapse">
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="/dashboard">Dashboard</a></li>
+						<li><a href="/profile">Profile</a></li>
+						<li><a href="/settings">Settings</a></li>
+						<li><a href="/help">Help</a></li>
+						<li><a href="/logout">Logout</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-sm-3 col-md-2 sidebar">
+					<h3>Hi, {{data[0]}}</h3>
+					<h4>Account type: {{ session['type'] }}</h4><br />
+					<ul class="nav nav-sidebar">
+						<li><a href="/dashboard">Overview </a></li>
+						<li><a href="#">Reports</a></li>
+						<li><a href="#">Analytics</a></li>
+						<li><a href="#">Export</a></li>
+					</ul>
+					<ul class="nav nav-sidebar">
+						<li><a href="">Nav item</a></li>
+						<li><a href="">Nav item again</a></li>
+						<li><a href="">One more nav</a></li>
+						<li><a href="">Another nav item</a></li>
+						<li><a href="">More navigation</a></li>
+					</ul>
+					<ul class="nav nav-sidebar">
+						<li class="active"><a href="/settings">Settings <span class="sr-only">(current)</span></a></li>
+						<li><a href="/help">Help</a></li>
+						<li><a href="/logout">Logout</a></li>
+					</ul>
+
+					Created for <a href="https://www.usebackpack.com/iiitd/w2017/cse202/" target="_blank">CSE202-Fundamentals of Database Systems</a> Course</li> 
+					by <a href="https://github.com/gureks">Gurek Singh</a> and <a href="">Azhar Tak</a>
+				</div>
+				<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+					<br />
+					<h1 class="page-header">Settings</h1>
+					<hr style="border-color: black;">
+					<div class="row">
+						<form class="form-signin" action="/changesettings" method="POST">
+							<h3 class="form-signin-heading" id="center">Change Username</h3>
+							<label for="inputUsername" class="sr-only">Username</label>
+							<input type="text" name="username" id="inputUsername" class="form-control" placeholder="Username" value="{{ session['username'] }}">
+							<h3 class="form-signin-heading" id="center">Change Password</h3>
+							<label for="inputPassword" class="sr-only">Password</label>
+							<input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password">
+							
+							{% if session['type']|string() == "admin" %}
+							<h3 class="form-signin-heading" id="center">Add another admin</h3>
+							<label for="inputAdmin" class="sr-only">Enter username</label>
+							<input type="text" name="newAdmin" id="inputAdmin" class="form-control" placeholder="Enter username">
+							{% endif %}	
+							<!-- <div class="checkbox">
+								<label>
+									<input type="checkbox" value="remember-me"> Remember me
+								</label>
+							</div> -->
+							<br />
+							<button class="btn btn-lg btn-primary btn-block" type="submit">Save Changes</button>
+						</form>
+
+					</div>
+
+					
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Bootstrap core JavaScript
+		================================================== -->
+		<!-- Placed at the end of the document so the pages load faster -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+	</body>
+</html>

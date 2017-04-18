@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="@gureks">
+	<title>Sign Up | Flask-ERP | Gurek - Azhar</title>
+	<link rel="stylesheet" href="{{ url_for('static',filename='css/bootstrap.min.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+
+	<div class="container">
+		{% if alert %}
+		<div class="alert alert-info alert-dismissible" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<strong>Heads, up!</strong> {{ alert|safe }}
+		</div>
+		{% endif %}
+		<form class="form-signin" action="/signup" method="POST">
+			<h1>ERP System</h1>
+			<hr style="border-color: black;">
+			<h3 class="form-signin-heading" id="center">Signing up new user</h3>
+			<label for="inputUsername" class="sr-only">Username</label>
+			<input type="text" name="username" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
+			<label for="inputPassword" class="sr-only">Password</label>
+			<input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
+			<label for="name" class="sr-only">Name</label>
+			<input type="text" name="name" id="name" class="form-control" placeholder="Name" required>
+			<label for="sex" class="sr-only">Sex(Male/Female)</label>
+			<input type="text" name="sex" id="sex" class="form-control" placeholder="Sex" required>
+			<label for="address" class="sr-only">Address</label>
+			<input type="text" name="address" id="address" class="form-control" placeholder="Address" required>
+			<label for="email" class="sr-only">Email</label>
+			<input type="email" name="email" id="email" class="form-control" placeholder="Email" required validate>
+			<label for="number" class="sr-only">Phone Number</label>
+			<input type="text" name="number" id="number" class="form-control" placeholder="Number" required>
+			<!-- <div class="checkbox">
+			
+				<label>
+					<input type="checkbox" value="remember-me"> Remember me
+				</label>
+			</div> -->
+			<button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
+		</form>
+
+	</div> <!-- /container -->
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
+</body>
+</html>

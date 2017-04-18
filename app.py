@@ -22,7 +22,37 @@ def index():
 def signup():
 	if 'username' in session:
 		return redirect('/dashboard')
-	
+	if request.method == "GET":
+		if 'alerts' in session:
+			alert = session['alerts']
+		else:
+			alert = None
+		return render_template("signup.html", alert=alert)
+	elif request.method == "POST":
+		username = request.form.get('username')
+		password = request.form.get('password')
+		name = request.form.get('name')
+		sex = request.form.get('sex')
+		dob = "2017-04-18"
+		address = request.form.get('address')
+		email = request.form.get('email')
+		number = request.form.get('number')
+		conn = mysql.connect()
+		cursor = conn.cursor()
+		cursor.execute("SELECT * FROM user where username ='" + username + "'")
+		data = cursor.fetchone()
+		if data is not None:
+			msg = "username already exists <br />"
+		flag = 0
+		flag = cursor.execute("INSERT INTO user VALUES('"+username+"','"+password+"','user')")
+		flag = cursor.execute("INSERT INTO profile VALUES('"+username+"','"+name+"','"+dob+"','"+sex+"','"+email+"','"+address+"','"+number+"')")
+		conn.commit()
+		if flag == 0:
+			msg = "wrong inputs, try again. <br />"
+		else: 
+			msg = "you were successful, please login from index."
+		session['alerts'] = msg
+		return redirect("/signup")
 
 @app.route('/login', methods=['GET','POST'])
 def login():

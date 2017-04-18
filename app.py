@@ -68,7 +68,23 @@ def login():
 	else:
 		session['username'] = username
 		session['type'] = data[2] 
+		print(session['username'],session['type'])
 		return redirect('/dashboard')
+
+@app.route('/admin/users')
+def users():
+	if 'username' not in session:
+		return redirect('/')
+	cursor = mysql.connect().cursor()
+	cursor.execute("SELECT type FROM user where username='" + session['username'] + "'")
+	data = cursor.fetchone()
+	if "admin" not in data:
+		return "you don't have access to this cause you're not an admin."
+	conn = mysql.connect()
+	cursor = conn.cursor()
+	cursor.execute("SELECT username FROM user WHERE EXISTS(SELECT * FROM user WHERE type = \"admin\")")
+	data = cursor.fetchall()
+	return render_template("users.html",data=data)
 
 @app.route('/logout')
 def logout():
@@ -102,12 +118,13 @@ def dashboard():
 	cursor = conn.cursor()
 	cursor.execute("SELECT username FROM user WHERE NOT EXISTS (SELECT * FROM profile WHERE user.username = profile.username)")
 	data = cursor.fetchone()
-	if session['username'] in data:
-		cursor.execute("DELETE FROM user WHERE username = '"+session['username']+"'")
-		conn.commit()
-		session.pop('username')
-		session.pop('type')
-		return "Your details are not filled. Please sign up again <a href=\"/signup\"> here</a>. Account has been suspended."
+	if data is not None:
+		if session['username'] in data:
+			cursor.execute("DELETE FROM user WHERE username = '"+session['username']+"'")
+			conn.commit()
+			session.pop('username')
+			session.pop('type')
+			return "Your details are not filled. Please sign up again <a href=\"/signup\">here</a>. Account has been suspended."
 	cursor.execute("SELECT name, dob, sex, email, number, address FROM user, profile where user.username = \"" + session['username'] + "\" and user.username = profile.username")
 	data = cursor.fetchone()
 	if data is None:

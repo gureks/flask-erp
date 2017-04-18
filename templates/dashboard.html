@@ -44,6 +44,9 @@
 					<h4>Account type: {{ session['type'] }}</h4><br />
 					<ul class="nav nav-sidebar">
 						<li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
+						{% if session['type']|string() == "admin" %}
+						<li><a href="/admin/users">Users</a></li>
+						{% endif %}
 						<li><a href="/settings">Settings</a></li>
 						<li><a href="/help">Help</a></li>
 						<li><a href="/logout">Logout</a></li>

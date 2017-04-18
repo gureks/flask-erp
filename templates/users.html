@@ -46,10 +46,8 @@
 					<h4>Account type: {{ session['type'] }}</h4><br />
 					<ul class="nav nav-sidebar">
 						<li><a href="/dashboard">Overview </a></li>
-						<li class="active"><a href="#">Settings <span class="sr-only">(current)</span></a></li>
-						{% if session['type']|string() == "admin" %}
-						<li><a href="/admin/users">Users</a></li>
-						{% endif %}
+						<li><a href="/settings">Settings</a></li>
+						<li class="active"><a href="#">Users <span class="sr-only">(current)</span></a></li>
 						<li><a href="/help">Help</a></li>
 						<li><a href="/logout">Logout</a></li>
 					</ul>
@@ -59,41 +57,13 @@
 				</div>
 				<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 					<br />
-					<h1 class="page-header">Settings</h1>
+					<h1 class="page-header">List of users</h1>
 					<hr style="border-color: black;">
-					{% if alert %}
-					<div class="alert alert-info alert-dismissible" role="alert">
-						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<strong>Heads, up!</strong> {{ alert }}
-					</div>
-					{% endif %}
-					<div class="row">
-						<form class="form-signin" action="/changesettings" method="POST">
-							<h3 class="form-signin-heading" id="center">Change Username</h3>
-							<label for="inputUsername" class="sr-only">Username</label>
-							<input type="text" name="username" id="inputUsername" class="form-control" placeholder="Username">
-							<h3 class="form-signin-heading" id="center">Change Password</h3>
-							<label for="inputPassword" class="sr-only">Password</label>
-							<input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password">
-							
-							{% if session['type']|string() == "admin" %}
-							<h3 class="form-signin-heading" id="center">Add another admin</h3>
-							<label for="inputAdmin" class="sr-only">Enter username</label>
-							<input type="text" name="newAdmin" id="inputAdmin" class="form-control" placeholder="Enter username">
-							{% endif %}	
-							<!-- <div class="checkbox">
-								<label>
-									<input type="checkbox" value="remember-me"> Remember me
-								</label>
-							</div> -->
-							<br />
-							<button class="btn btn-lg btn-primary btn-block" type="submit">Save Changes</button>
-						</form>
-
-					</div>
-
-					
-					</div>
+					<ol>
+					{% for i in data%}
+						<li>{{i}}</li>
+					{% endfor %}
+					</ol>
 				</div>
 			</div>
 		</div>

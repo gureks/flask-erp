@@ -70,11 +70,17 @@
 					<br />
 					<h1 class="page-header">Settings</h1>
 					<hr style="border-color: black;">
+					{% if alert %}
+					<div class="alert alert-info alert-dismissible" role="alert">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<strong>Heads, up!</strong> {{ alert }}
+					</div>
+					{% endif %}
 					<div class="row">
 						<form class="form-signin" action="/changesettings" method="POST">
 							<h3 class="form-signin-heading" id="center">Change Username</h3>
 							<label for="inputUsername" class="sr-only">Username</label>
-							<input type="text" name="username" id="inputUsername" class="form-control" placeholder="Username" value="{{ session['username'] }}">
+							<input type="text" name="username" id="inputUsername" class="form-control" placeholder="Username">
 							<h3 class="form-signin-heading" id="center">Change Password</h3>
 							<label for="inputPassword" class="sr-only">Password</label>
 							<input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password">

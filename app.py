@@ -18,6 +18,12 @@ def index():
 		return redirect('/dashboard')
 	return render_template('index.html')
 
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+	if 'username' in session:
+		return redirect('/dashboard')
+	
+
 @app.route('/login', methods=['GET','POST'])
 def login():
 	if 'username' in session:
@@ -36,6 +42,8 @@ def login():
 
 @app.route('/logout')
 def logout():
+	if 'username' not in session:
+		return redirect('/')
 	session.pop('username')
 	session.pop('type') 
 	return redirect('/')
@@ -49,7 +57,12 @@ def settings():
 	data = cursor.fetchone()
 	if data is None:
 		return abort(404)
-	return render_template('settings.html', data=data)
+	if 'alerts' in session:
+		alert = session['alerts']
+		session.pop('alerts')
+	else:
+		alert = None
+	return render_template('settings.html', data=data, alert=alert)
 
 @app.route('/dashboard')
 def dashboard():
@@ -73,30 +86,46 @@ def changesettings():
 	username = request.form.get('username')
 	password = request.form.get('password')
 	newAdmin = request.form.get('newAdmin')
-	msg = username + " " + password + " " + newAdmin + " " 
-	if username is not None:
+	conn = mysql.connect()
+	cursor = conn.cursor()
+	msg = " "
+	if username is not "" and username is not None:
 		if username == session['username']:
-			msg = msg + "<br />same username "
+			msg = msg + "<br /> Same Username "
 		else:
-			conn = mysql.connect()
-			cursor = conn.cursor()
 			cursor.execute("SELECT username FROM user WHERE username = \"" + username + "\"")
 			data = cursor.fetchone()
 			if data is None:
-				msg = msg + "<br /> Username available"
-				print("UPDATE user SET username = \"" + username + "\" WHERE username = \"" + session['username'] + "\"" )
+				msg = msg + "<br /> Username Available"
 				cursor.execute("UPDATE user SET username = \"" + username + "\" WHERE username = \"" + session['username'] + "\"" )
 				cursor.execute("UPDATE profile SET username = \"" + username + "\" WHERE username = \"" + session['username'] + "\"" )
-				data = cursor.fetchone()
-				print(data)
 				conn.commit()
 				session['username'] = username
+				msg = msg + "<br />username changed to " + username
 			else:
 				msg = msg + "<br />username already exists"
 	else:
 		msg = msg + "<br /> username is none"
-	return msg + "<br /> username now is " + session['username']	
-
+	if password is not "" and password is not None:
+		cursor.execute("SELECT password FROM user WHERE username = \"" + username + "\"")
+		data = cursor.fetchone()
+		if password == data:
+			msg = msg + "<br /> Same Password."
+		else:
+			cursor.execute("UPDATE user SET password = \"" + password + "\" WHERE username = \"" + session['username'] + "\"" )
+			conn.commit()
+	msg = msg + "<br /> Password changed."
+	if newAdmin is not "" and newAdmin is not None:
+		cursor.execute("SELECT type FROM user WHERE username = \"" + str(newAdmin) + "\"")
+		data = cursor.fetchone()
+		if data[0] == "admin":
+			msg = msg + "<br /> Already admin "
+		else:
+			cursor.execute("UPDATE user SET type = \"admin\" WHERE username = \"" + str(newAdmin) + "\"" )
+			conn.commit()
+			msg = msg + "<br />" + newAdmin + " is now admin "
+	session['alerts'] = msg		
+	return redirect("/settings")
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0',port=8000,debug=True)

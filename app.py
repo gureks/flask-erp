@@ -98,7 +98,16 @@ def settings():
 def dashboard():
 	if 'username' not in session:
 		return redirect('/')
-	cursor = mysql.connect().cursor()
+	conn = mysql.connect()
+	cursor = conn.cursor()
+	cursor.execute("SELECT username FROM user WHERE NOT EXISTS (SELECT * FROM profile WHERE user.username = profile.username)")
+	data = cursor.fetchone()
+	if session['username'] in data:
+		cursor.execute("DELETE FROM user WHERE username = '"+session['username']+"'")
+		conn.commit()
+		session.pop('username')
+		session.pop('type')
+		return "Your details are not filled. Please sign up again <a href=\"/signup\"> here</a>. Account has been suspended."
 	cursor.execute("SELECT name, dob, sex, email, number, address FROM user, profile where user.username = \"" + session['username'] + "\" and user.username = profile.username")
 	data = cursor.fetchone()
 	if data is None:
